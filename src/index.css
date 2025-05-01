@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-pastel-blue: #aecfee;
+  --color-dark-pastel-blue: #7db1e0;
+  --color-cream: #f7f3e3;
+  --color-dark-cream: #e8e0c8;
+  --color-text-dark: #333333;
+  --color-text-light: #ffffff;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.dark {
+  @apply bg-gray-900 text-text-light;
+}
+
+.light {
+  @apply bg-cream text-text-dark;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.9em;
+  margin-right: 0.9em;
+  margin-bottom: 1.2em;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0.7em solid #aecfee;
+  border-left: 0.3em solid transparent;
+  font-size: 5px;
+}
+
+.star:before,
+.star:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 0.6em;
+  left: -1em;
+  border-right: 1em solid transparent;
+  border-bottom: 0.7em solid #aecfee;
+  border-left: 1em solid transparent;
+  transform: rotate(-35deg);
+}
+
+.star:after {
+  transform: rotate(35deg);
+}
+
+.dark .star,
+.dark .star:before,
+.dark .star:after {
+  border-bottom-color: #7db1e0;
+}
+
+/* Add custom button styles */
+.btn-primary {
+  @apply bg-pastel-blue hover:bg-dark-pastel-blue text-text-dark font-medium py-2 px-4 rounded transition-colors duration-300;
+}
+
+.btn-secondary {
+  @apply bg-cream hover:bg-dark-cream text-text-dark font-medium py-2 px-4 rounded border border-pastel-blue transition-colors duration-300;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+.dark .card {
+  @apply bg-gray-800 border border-gray-700;
+}
+
+/* Input styles */
+.input {
+  @apply w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-pastel-blue;
+}
+
+.dark .input {
+  @apply bg-gray-800 border-gray-600 text-white;
+}
