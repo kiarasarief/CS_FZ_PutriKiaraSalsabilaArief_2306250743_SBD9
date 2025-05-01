@@ -12,7 +12,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 15000, // 15 seconds timeout for production
-  withCredentials: true, // Enable cookies and credentials
+  withCredentials: false, // Disable cookies and credentials
 });
 
 // Request interceptor - adds auth token if available
@@ -76,7 +76,7 @@ export const uploadApi = axios.create({
     "Content-Type": "multipart/form-data",
   },
   timeout: 60000, // 60 seconds for uploads
-  withCredentials: true,
+  withCredentials: false, // Disable cookies and credentials
 });
 
 // Apply the same interceptors to the upload instance
