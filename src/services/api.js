@@ -76,7 +76,7 @@ export const uploadApi = axios.create({
     "Content-Type": "multipart/form-data",
   },
   timeout: 60000, // 60 seconds for uploads
-  withCredentials: false, // Disable cookies and credentials
+  withCredentials: true, // Enable cookies and credentials
 });
 
 // Apply the same interceptors to the upload instance
