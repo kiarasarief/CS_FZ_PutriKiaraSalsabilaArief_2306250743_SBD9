@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { usersApi } from "../services/api";
+import { handleApiError } from "../utils/apiUtils";
 
 const AuthContext = createContext();
 
@@ -30,14 +31,16 @@ export function AuthProvider({ children }) {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: "customer",
+        role: user.role || "customer",
+        token: user.token,
       });
       localStorage.setItem("currentUser", JSON.stringify(user));
       setIsAuthenticated(true);
 
       return user;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Registration failed");
+      console.error("Registration error:", error);
+      throw new Error(error.message || "Registration failed");
     }
   };
 
@@ -51,13 +54,42 @@ export function AuthProvider({ children }) {
         name: user.name,
         email: user.email,
         role: user.role,
+        token: user.token,
       });
       localStorage.setItem("currentUser", JSON.stringify(user));
       setIsAuthenticated(true);
 
       return user;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Login failed");
+      console.error("Login error:", error);
+      throw new Error(error.message || "Login failed");
+    }
+  };
+
+  const updateProfile = async (userData) => {
+    try {
+      const response = await usersApi.update(userData);
+      const updatedUser = response.data.payload;
+
+      setCurrentUser((prev) => ({
+        ...prev,
+        ...updatedUser,
+      }));
+
+      // Update local storage
+      const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          ...storedUser,
+          ...updatedUser,
+        })
+      );
+
+      return updatedUser;
+    } catch (error) {
+      console.error("Profile update error:", error);
+      throw new Error(error.message || "Failed to update profile");
     }
   };
 
@@ -74,6 +106,7 @@ export function AuthProvider({ children }) {
     register,
     login,
     logout,
+    updateProfile,
   };
 
   return (

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -13,20 +12,26 @@ import StoreManagement from "./pages/StoreManagement";
 import TransactionHistory from "./pages/TransactionHistory";
 import NotFound from "./pages/NotFound";
 import { useAuth } from "./contexts/AuthContext";
+import api from "./services/api";
 
 function App() {
   const { isAuthenticated } = useAuth();
 
-  const [array, setArray] = useState([]);
+  const [serverStatus, setServerStatus] = useState(null);
 
-  const fetchAPI = async () => {
-    const response = await axios.get("http://localhost:4000/");
-    setArray(response.data.test);
-    console.log(response.data.test);
+  const checkServerStatus = async () => {
+    try {
+      const response = await api.get("/");
+      setServerStatus(response.data);
+      console.log("Server status:", response.data);
+    } catch (error) {
+      console.error("Failed to connect to server:", error);
+      setServerStatus({ status: "error", message: "Cannot connect to server" });
+    }
   };
 
   useEffect(() => {
-    fetchAPI();
+    checkServerStatus();
   }, []);
 
   const ProtectedRoute = ({ children }) => {
