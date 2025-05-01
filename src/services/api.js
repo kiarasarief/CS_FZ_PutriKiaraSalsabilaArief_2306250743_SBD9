@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://os.netlabdte.com";
+const API_URL = "https://cs9-backend-kiara.vercel.app/";
 
 const api = axios.create({
   baseURL: API_URL,

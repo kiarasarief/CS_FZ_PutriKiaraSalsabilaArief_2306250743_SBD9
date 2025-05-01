@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -15,7 +17,18 @@ import { useAuth } from "./contexts/AuthContext";
 function App() {
   const { isAuthenticated } = useAuth();
 
-  // Protected route component
+  const [array, setArray] = useState([]);
+
+  const fetchAPI = async () => {
+    const response = await axios.get("http://localhost:4000/");
+    setArray(response.data.test);
+    console.log(response.data.test);
+  };
+
+  useEffect(() => {
+    fetchAPI();
+  }, []);
+
   const ProtectedRoute = ({ children }) => {
     if (!isAuthenticated) {
       return <Navigate to="/login" replace />;
